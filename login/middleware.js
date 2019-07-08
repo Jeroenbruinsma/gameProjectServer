@@ -2,7 +2,6 @@ const User = require('../user/model')
 const {toJWT,toData} = require('./jwt')
 
 function auth(req, res, next) {
-  console.log("authitencation",req.headers)
   const auth = req.headers.authorization && req.headers.authorization.split(' ')
   if (auth && auth[0] === 'Bearer' && auth[1]) {
     try {
