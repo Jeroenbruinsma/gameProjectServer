@@ -4,7 +4,7 @@ const bodyParser = require("body-parser")
 const jsonParser = bodyParser.json()
 let port;
 require("./db.js")
-const advertisement = require('./advertisement/router')
+//const advertisement = require('./advertisement/router')
 //const tokens = require('./tokens/middleware')
 const cors = require('cors')
 

@@ -18,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/Jeroenbruinsma/gameProjectServer/issues"
   },
-  "homepage": "https://github.com/Jeroenbruinsma/gameProjectServer#readme"
+  "homepage": "https://github.com/Jeroenbruinsma/gameProjectServer#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
 }
