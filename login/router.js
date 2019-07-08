@@ -4,22 +4,15 @@ var router = express.Router();
 const bcrypt = require('bcrypt')
 const {toJWT,toData} = require('./jwt')
 
-router.post('/user', function (req, res) {
-    const newUser = {
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 10),
-        password_confirmation: bcrypt.hashSync(req.body.password_confirmation, 10)
-    }
-    User
-        .create(newUser)
-        .then(user => res.status(201).json({ email: user.email, id: user.id }))
-        .catch(err => console.log("got an error"))
-}
-)
 
-router.post('/tokens', function (req, res) {
+
+router.post('/login', function (req, res) {
+    const name = req.body.name
     const email = req.body.email
     const passwd = req.body.password
+    const passwd_2 = req.body.password_2
+
+
     if ((email != undefined) &&( passwd != undefined) && ( passwd != "")) {
       user
       .findOne({
