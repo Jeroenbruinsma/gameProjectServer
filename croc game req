@@ -16,7 +16,7 @@ It's a fun kids game, contains all the learning goals. And ofcourse we like croc
 What do your teammates need to know to work with youeffectively?
 <Jeroen> My code is messy 
 <Sooyoung> I'm slow
-<Sooyoung> Can consentrate better at home
+<Sooyoung> Can concentrate better at home
 
 
 What parts of the work do you think you will be good at or enjoy?
@@ -49,12 +49,6 @@ Backend (sequelize,router) = 1 app
 			clicked
 			biting
 			PlaceInMouth 
-			
-					
-			
-			
-				
-			
 
 
 3.  What properties will the store have?
@@ -97,7 +91,7 @@ t
 		POST /game
 		DELETE /game
 		PUT /game
-		GET /game (this data will already be in your reducer because of the eventsource in App. Should you just use that data, or request it again?)
+		GET /game (this data will already be in your reducer because of the eventsource in App. Should you just use that data, or request it again?) -> request again, room could be full in the mean time
 		PUT /tooth
 				
 

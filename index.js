@@ -8,6 +8,7 @@ require("./db.js")
 const User = require('./user/router')
 const Login =  require('./login/router')
 //const tokens = require('./tokens/middleware')
+const Game = require('./game/router')
 
 
 const cors = require('cors')
@@ -26,3 +27,4 @@ app.use(cors())
 app.use(jsonParser)
 app.use(User)
 app.use(Login)
+app.use(Game)
