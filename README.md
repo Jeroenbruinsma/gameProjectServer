@@ -1,4 +1,3 @@
-# gameProjectServer
 What part of the stack to do you think will be the hardest?
 making funcions
 Put everything in react/redux/ api
@@ -33,21 +32,33 @@ Backend (sequelize,router) = 1 app
 	Users		id (auto increment by db)
 			name	
 			email (required)
-			password (requiered)
+			password (requiered).
+			gameId ()
 
-	lobby		id (auto increment by db)
-			gameName
-			playerId (id from users)
+	Game		id (auto increment by db)
+			
+			userIds (id from users)
+			gameName (less importand)			
 			status (waiting for player, full, empty)
-
-	GameStats	id (auto increment by db)
-			lobbyId
-			turns	
 			playerWinner (id users) (null if no winner yet)
+			turn(userid who has to press a tooth)
+			bitingThooth = int = rand num 0-max_tooth
+	
+	teeth 		id
+			gameId
+			clicked
+			biting
+			PlaceInMouth 
+			
+					
+			
+			
+				
+			
 
 
 3.  What properties will the store have?
-
+t
 	the store has 
 		tooth[ 	{ thooth1 = false(unclicked), biteTooth=false }, 
 		       	{ thooth2 = true(clicked) biteTooth=false      },
@@ -58,37 +69,77 @@ Backend (sequelize,router) = 1 app
 
 		    ]
 		make_new_user -> login -> choose loby -> wait for 2nd player -> play -> winner -> login 
+		
+			lobby
 
-		actions player_get_name
-			total_streak
-			lobby_get_rooms 
-			lobby_create_room
-			lobby_enter_room
-			game_tooth_clicked(toothnumber)
+			game
+
+			player
+
+
+
+		actions 
+			
 			login (username, password)
-			signup(username,password, name, email)			
-	
-		reducers
-			player_get_name
-			total_streak
-			lobby_get_rooms
-			tooth_clicked(toothnumber )
-			game_finished
-			login
+			signup(username,password, name, email)		
 		
 
 4.  What routes will be handled?
 
-	localhost:5000/users
-	localhost:5000/lobby
-	localhost:5000/gamestats {playerIDTurn=xx }
+	client
+		localhost:5000/users
+		localhost:5000/lobby
+		localhost:5000/game {playerIDTurn=xx }
+
+	server
+		POST /user
+		POST /login
+		POST /game
+		DELETE /game
+		PUT /game
+		GET /game (this data will already be in your reducer because of the eventsource in App. Should you just use that data, or request it again?)
+		PUT /tooth
+				
 
 5.  How will the files be structured?
 	
 	gameWeek / server / (sequelize project)
+			.git
+			index.js
+			db.js
+			game/
+				model.js
+				router.js
+			user/
+				model.js
+				router.js
 		 / client / (react project)
+			.git
+			index.js
+			store.js
+			App.js
+			actions/
+				game.js
+				user.js
+			reducers
+				lobby
+				game
+				player
+				index (combine)
+			components
+				game
+					container
+					display
+			
+
+
+
+todo: (in a component )
+lobby_get_rooms 
+lobby_create_room
+lobby_enter_room
+game_tooth_clicked(toothnumber)
 
 
 
  
-
