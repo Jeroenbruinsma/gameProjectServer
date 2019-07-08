@@ -1,6 +1,7 @@
 const express = require('express')
 var router = express.Router();
 const auth = require('../login/middleware')
+const teeth = require('../teeth/model')
 
 router.post('/game/:id', auth, function (req, res) {
   console.log("get game with auth") 

@@ -91,8 +91,8 @@ t
 		POST /game
 		DELETE /game
 		PUT /game
-		GET /game (this data will already be in your reducer because of the eventsource in App. Should you just use that data, or request it again?) -> request again, room could be full in the mean time
-		PUT /tooth
+		GET /game (this data will already be in your reducer because of the eventsource in App. Should you just use that data, or 					request it again?) -> request again, room could be full in the mean time
+		PUT /tooth/id
 				
 
 5.  How will the files be structured?
