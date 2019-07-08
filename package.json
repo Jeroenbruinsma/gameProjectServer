@@ -1,0 +1,22 @@
+{
+  "name": "gameProjectServer",
+  "version": "1.0.0",
+  "description": "What part of the stack to do you think will be the hardest? making funcions Put everything in react/redux/ api Project time is limited",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jeroenbruinsma/gameProjectServer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jeroenbruinsma/gameProjectServer/issues"
+  },
+  "homepage": "https://github.com/Jeroenbruinsma/gameProjectServer#readme"
+}
