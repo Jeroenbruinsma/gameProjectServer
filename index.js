@@ -5,7 +5,12 @@ const jsonParser = bodyParser.json()
 let port;
 require("./db.js")
 //const advertisement = require('./advertisement/router')
+const User = require('./user/router')
+const Login =  require('./login/router')
 //const tokens = require('./tokens/middleware')
+const Game = require('./game/router')
+
+
 const cors = require('cors')
 
 if(!process.env.PORT){
@@ -20,4 +25,6 @@ app.get('/', (req, res) => res.send('Server running'))
 app.listen(port, () => `Listening on port ${port}`)
 app.use(cors())
 app.use(jsonParser)
-//app.use(advertisement)
+app.use(User)
+app.use(Login)
+app.use(Game)
