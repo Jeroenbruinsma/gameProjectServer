@@ -1,5 +1,5 @@
 const express = require('express')
-const User = require('./model')
+const User = require('../user/model')
 var router = express.Router();
 const bcrypt = require('bcrypt')
 const {toJWT,toData} = require('./jwt')
@@ -14,7 +14,7 @@ router.post('/login', function (req, res) {
 
 
     if ((email != undefined) &&( passwd != undefined) && ( passwd != "")) {
-      user
+      User
       .findOne({
         where: {
           email: req.body.email
