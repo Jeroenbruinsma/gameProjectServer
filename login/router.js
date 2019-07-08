@@ -7,10 +7,8 @@ const {toJWT,toData} = require('./jwt')
 
 
 router.post('/login', function (req, res) {
-    const name = req.body.name
     const email = req.body.email
     const passwd = req.body.password
-    const passwd_2 = req.body.password_2
 
 
     if ((email != undefined) &&( passwd != undefined) && ( passwd != "")) {

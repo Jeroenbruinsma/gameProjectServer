@@ -2,7 +2,7 @@ const express = require('express')
 const User = require('./model')
 var router = express.Router();
 const bcrypt = require('bcrypt')
-const { toJWT, toData } = require('./jwt')
+const { toJWT, toData } = require('../login/jwt')
 
 router.post('/user', function (req, res) {
     console.log("post user", req.body)
