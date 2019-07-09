@@ -1,27 +1,31 @@
 const Sequelize = require('sequelize')
 const sequelize = require('../db')
+const Game = require('../game/model')
 
 
-const Users = sequelize.define('teeth', {
+const Teeth = sequelize.define('teeth', {
     gameId: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false
     },
     clicked: {
         type: Sequelize.BOOLEAN,
-        allowNull: false
+        allowNull: false,
+        defaultValue: false,
     },
     biting: {
         type: Sequelize.BOOLEAN,
-        allowNull: false
+        allowNull: false,
+        defaultValue: false,
     },
     placeInMouth: {
         type: Sequelize.BOOLEAN,
-        allowNull: false
+        allowNull: false,
+        defaultValue: false,
     },
 }, {
         timestamps: false,
         tableName: 'teeth'
     })
-
-module.exports = Users
+    //Teeth.belongsTo(Game) not needed??
+module.exports = Teeth

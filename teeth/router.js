@@ -2,6 +2,7 @@ const Teeth = require('../teeth/model')
 const express = require('express')
 var router = express.Router();
 const auth = require('../login/middleware')
+const Game = require('../game/model')
 
 router.get('/teeth', auth, function (req, res, next) {
     Teeth.findAll()    //{ where: { userId: req.user.dataValues.id } }
@@ -15,5 +16,5 @@ router.get('/teeth', auth, function (req, res, next) {
             })
         })
 })
-
+ 
 module.exports = router;

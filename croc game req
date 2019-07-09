@@ -42,7 +42,7 @@ Backend (sequelize,router) = 1 app
 			status (waiting for player, full, empty)
 			playerWinner (id users) (null if no winner yet)
 			turn(userid who has to press a tooth)
-			bitingThooth = int = rand num 0-max_tooth
+			
 	
 	teeth 		id
 			gameId
