@@ -45,10 +45,6 @@ router.put('/teeth', auth, function (req, res, next) {
                 })
                 console.log('something went wrong')
             })
-        //check if thoot is in db
-        // if is. > clicked
-        //send > new theeth 
-
     } else {
         res.send("message: unknown tooth")
     }

@@ -57,8 +57,6 @@ router.post('/game/', auth, function (req, res) {
 router.get('/game', auth, function (req, res, next) {
     Game.findAndCountAll()
         .then(dbCount => {
-            console.log("dbresult", dbCount.count)
-            console.log("dbresult", dbCount.rows[0].dataValues)
             return dbCount.rows
         })
         .then(lobbyGames => {
@@ -72,6 +70,12 @@ router.delete('/game/:id', auth, function (req, res) {
     const { id } = req.params
     console.log(`User with ${name} tries to delete game with id: ${id}`)
     res.status(201).send({ data: "Why do you want to delete a game?" })
+})
+
+
+router.put('/game' , auth , function (req, res, next) {
+    console.log('Please implement stream here for Serena!')
+
 })
 
 module.exports = router;

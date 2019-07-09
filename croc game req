@@ -85,14 +85,16 @@ t
 		localhost:5000/game {playerIDTurn=xx }
 
 	server
-		POST /user
-		POST /login
-		POST /game
-		DELETE /game
-		PUT /game   add yourself to the game 
-		GET /game  List of games
+		POST /user  -> Making a account
+		POST /login -> get your token
+		GET /game  List of games	
+		POST /game  -> new lobby item
+		DELETE /game -> remove lobby item
+		
+		PUT /game   add yourself to the game -> stream starts 
+
 			(this data will already be in your reducer because of the eventsource in App. Should you just use that data, or 					request it again?) -> request again, room could be full in the mean time
-		PUT /tooth/id
+		PUT /tooth/id  -> in the stream when click on tooth 
 				
 
 5.  How will the files be structured?
