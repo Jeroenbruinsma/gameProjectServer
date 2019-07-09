@@ -26,21 +26,23 @@ router.post('/game/', auth, function (req, res) {
 
         })
         .then(gameId => {
-            Teeth.findAndCountAll({"gameID": gameId })
-                .then(dbCount => console.log("dbresult",dbCount.count))
+            Teeth.findAndCountAll({ "gameID": gameId })
+                .then(dbCount => console.log("dbresult", dbCount.count))
                 .catch(err => res.statusCode(500).send("something went wrong"))
-            
+
             const magic_theeth = getRandomInt(maxTeethInMouth)
             for (let i = 0; i < maxTeethInMouth; i++) {
                 console.log("create teeth ", i)
                 if (i === magic_theeth) {
                     Teeth
-                        .create({ "gameId": gameId,
-                                "biting": true })
+                        .create({
+                            "gameId": gameId,
+                            "biting": true
+                        })
                 } else {
                     Teeth
                         .create({
-                            "gameId": gameId                            
+                            "gameId": gameId
                         })
                 }
             }
@@ -49,6 +51,25 @@ router.post('/game/', auth, function (req, res) {
         })
 
     res.status(201).send({ data: "send some data to make Serena Happy" })
+})
+
+
+router.get('/game', auth, function (req, res, next) {
+    Game.findAndCountAll()
+        .then(dbCount => {
+            console.log("dbresult", dbCount.count)
+            console.log("dbresult", dbCount.rows[0].dataValues)
+            return dbCount.rows
+        })
+        .then(lobbyGames => {
+            
+            res.json({ Lobby: lobbyGames })
+        })
+        
+        .catch(err => res.statusCode(500).send("something went wrong"))
+
+
+
 })
 
 router.delete('/game/:id', auth, function (req, res) {

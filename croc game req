@@ -36,7 +36,6 @@ Backend (sequelize,router) = 1 app
 			gameId ()
 
 	Game		id (auto increment by db)
-			
 			userIds (id from users)
 			gameName (less importand)			
 			status (waiting for player, full, empty)
@@ -90,8 +89,9 @@ t
 		POST /login
 		POST /game
 		DELETE /game
-		PUT /game
-		GET /game (this data will already be in your reducer because of the eventsource in App. Should you just use that data, or 					request it again?) -> request again, room could be full in the mean time
+		PUT /game   add yourself to the game 
+		GET /game  List of games
+			(this data will already be in your reducer because of the eventsource in App. Should you just use that data, or 					request it again?) -> request again, room could be full in the mean time
 		PUT /tooth/id
 				
 
