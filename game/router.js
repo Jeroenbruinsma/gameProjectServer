@@ -62,14 +62,9 @@ router.get('/game', auth, function (req, res, next) {
             return dbCount.rows
         })
         .then(lobbyGames => {
-            
             res.json({ Lobby: lobbyGames })
         })
-        
         .catch(err => res.statusCode(500).send("something went wrong"))
-
-
-
 })
 
 router.delete('/game/:id', auth, function (req, res) {
