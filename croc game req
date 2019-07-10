@@ -36,13 +36,12 @@ Backend (sequelize,router) = 1 app
 			gameId ()
 
 	Game		id (auto increment by db)
-			
 			userIds (id from users)
 			gameName (less importand)			
 			status (waiting for player, full, empty)
 			playerWinner (id users) (null if no winner yet)
 			turn(userid who has to press a tooth)
-			bitingThooth = int = rand num 0-max_tooth
+			
 	
 	teeth 		id
 			gameId
@@ -86,13 +85,16 @@ t
 		localhost:5000/game {playerIDTurn=xx }
 
 	server
-		POST /user
-		POST /login
-		POST /game
-		DELETE /game
-		PUT /game
-		GET /game (this data will already be in your reducer because of the eventsource in App. Should you just use that data, or request it again?) -> request again, room could be full in the mean time
-		PUT /tooth
+		POST /user  -> Making a account
+		POST /login -> get your token
+		GET /game  List of games	
+		POST /game  -> new lobby item
+		DELETE /game -> remove lobby item
+		
+		PUT /game   add yourself to the game -> stream starts 
+
+			(this data will already be in your reducer because of the eventsource in App. Should you just use that data, or 					request it again?) -> request again, room could be full in the mean time
+		PUT /tooth/id  -> in the stream when click on tooth 
 				
 
 5.  How will the files be structured?
