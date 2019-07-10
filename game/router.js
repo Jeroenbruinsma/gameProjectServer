@@ -126,7 +126,6 @@ router.get('/game/:id', function (req, res, next) {
 })
 
 
-
 router.put('/teeth', auth, function (req, res, next) {
     const teethId = parseInt(req.body.teethId)
     if (teethId) {
@@ -138,24 +137,48 @@ router.put('/teeth', auth, function (req, res, next) {
                         message: 'Tooth Unknown',
                     })
                 } else {
-                    console.log("found the tooth, update the click")
+                    console.log("found the tooth, update the clickkk", result)
                     result.update({
                         clicked: true
                     })
-                        .then(tmp => {
-                            if (tmp.dataValues.clicked === true) {
-                                //stream inplementation
-                                const json = JSON.stringify(tmp.dataValues)
-                                stream.updateInit(json)
-                                stream.send(json)
-                                console.log("stream send",stream)
-                            }
-                            //stream inplementation 
-                            res.status(200).json({ message: "done" })
 
-                        })
+
                 }
+                return (result)
             })
+            .then(result => {
+                //this is the new part! 
+                const id = result.dataValues.gameId
+                console.log("this is IMP should be a id", id)
+
+                Game.findAll({ where: { id } })
+                    .then(dbGame => {
+                        const GameInfo = dbGame[0].dataValues
+                        console.log("std obj", GameInfo)
+                        Teeth.findAll({
+                            where: { "gameId": id },
+                            attributes: ['id', 'clicked', 'placeInMouth']
+                        })
+                            .then(teethForThisGame => {
+                                const ToothInMout = teethForThisGame.map(crokiTeeth => {
+                                    return crokiTeeth.dataValues
+                                })
+                                return {
+                                    GameInfo,
+                                    ToothInMout
+                                }
+                            })
+                            .then(GameObject => {
+                                const json = JSON.stringify(GameObject)
+                                console.log("json", json)
+                                console.log("is stream ", stream)
+                                stream.updateInit(json)
+                                return stream.send(json)
+                            })
+                    })
+            })
+
+            //this is the new part!
             .catch(err => {
                 res.status(500).json({
                     message: 'Tooth Unknown',
@@ -167,5 +190,6 @@ router.put('/teeth', auth, function (req, res, next) {
     }
 
 })
+
 
 module.exports = router;
