@@ -3,6 +3,11 @@ const express = require('express')
 var router = express.Router();
 const auth = require('../login/middleware')
 const Game = require('../game/model')
+const Sse = require('json-sse')
+const {stream }= require('../game/router')
+
+//const json = JSON.stringify([])
+//const stream = new Sse(json);
 
 router.get('/teeth', auth, function (req, res, next) {
     Teeth.findAll()    //{ where: { userId: req.user.dataValues.id } }
@@ -27,16 +32,24 @@ router.put('/teeth', auth, function (req, res, next) {
                     res.status(500).json({
                         message: 'Tooth Unknown',
                     })
-                }else{
-                    console.log("found the tooth, update the click")
+                } else {
+                    console.log("found the tooth, update the clickkk",result)
                     result.update({
                         clicked: true
                     })
-                    .then(tmp => {
-                        if(tmp.dataValues.clicked === true ){
-                            res.status(200).json({message: "done"})
-                        }
-                    })
+                        .then(tmp => {
+                            if (tmp.dataValues.clicked === true) {
+                                //stream inplementation
+                                console.log("MIMI WAUW", tmp.dataValues)
+                                const json = JSON.stringify(tmp.dataValues)
+                                stream.updateInit(json)
+                                stream.send(json)
+                                console.log("stream send",stream)
+                            }
+                            //stream inplementation 
+                            res.status(200).json({ message: "done" })
+
+                        })
                 }
             })
             .catch(err => {
