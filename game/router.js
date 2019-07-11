@@ -8,6 +8,7 @@ const Sse = require('json-sse')
 const json = JSON.stringify([])
 
 const stream = new Sse(json);
+const streamForLobby = new Sse(json);
 
 
 function getRandomInt(max) {
@@ -75,23 +76,84 @@ router.delete('/game/:id', auth, function (req, res) {
     res.status(201).send({ data: "Why do you want to delete a game?" })
 })
 
-router.get('/lobby/:id', function (req, res, next) {
+router.get('/lobby/:id', auth, function (req, res, next) {
     const { id } = req.params
+    const playerId = req.user.dataValues.id
     console.log("Player joins game :", id)
-    stream.init(req, res)
+    console.log("Whoiis the player?", playerId)
 
-    Game.findAll({ where: { id } })
+   
+    Game.findOne({ where: { id } })
         .then(dbGame => {
-            console.log("dbGame", dbGame[0].dataValues)
+            //console.log("dbGame", dbGame)
+            newStatus = statusOfGame(dbGame.dataValues.status)
+            newUsers = usersOfGame(dbGame.dataValues.userIds, playerId)
+            console.log("got back", newStatus)
+            dbGame.update({
+                userIds: newUsers,
+                status: newStatus
+            })
 
-
-            const json = JSON.stringify(dbGame[0].dataValues)
-            console.log("json", json)
-            stream.updateInit(json)
-            return stream.send(json)
+                .then(dbgame => {
+                    // console.log("dbGameW user1", dbgame)
+                    //console.log("dbGameW user2", dbgame.dataValues)
+                    const json = JSON.stringify(dbGame.dataValues)
+                    console.log("json", json)
+                    res.status(201).json(dbGame.dataValues )
+                    
+                })
         })
 
 })
+
+const usersOfGame = (currentUsersOfGame, newPlayer) => {
+    console.log("currentUsersOfGame", currentUsersOfGame, newPlayer)
+    //validat if is valid json here
+    console.log("is valid json tester: ", IsJsonString(currentUsersOfGame))
+    if (IsJsonString(currentUsersOfGame)) {
+        const obj = JSON.parse(currentUsersOfGame);
+        if (obj.user1 !== newPlayer) {
+            return JSON.stringify({
+                user1: obj.user1,
+                user2: newPlayer
+            })
+        } else {
+            return currentUsersOfGame
+        }
+    } else {
+        //not a valid json so overwrite
+        return JSON.stringify({
+            user1: newPlayer,
+            user2: null
+        })
+    }
+}
+
+function IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
+const statusOfGame = (currentStatusOfGame) => {
+    console.log("imp of statusofgame", currentStatusOfGame)
+    switch (currentStatusOfGame) {
+        case "EMPTY":
+            return "WAITING"
+        case "WAITING":
+            return "FULL"
+        case "FULL":
+            return "DONE"
+
+        default:
+            return currentStatusOfGame
+    }
+
+
+}
 
 router.get('/game/:id', function (req, res, next) {
     const { id } = req.params
@@ -106,7 +168,7 @@ router.get('/game/:id', function (req, res, next) {
                 where: { "gameId": id },
                 attributes: ['id', 'clicked', 'placeInMouth']
             })
-                .then(teethForThisGame => {
+                .then(teetGameObjecthForThisGame => {
                     const ToothInMout = teethForThisGame.map(crokiTeeth => {
                         return crokiTeeth.dataValues
                     })
