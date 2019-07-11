@@ -82,7 +82,7 @@ router.get('/lobby/:id', auth, function (req, res, next) {
     console.log("Player joins game :", id)
     console.log("Whoiis the player?", playerId)
 
-   
+
     Game.findOne({ where: { id } })
         .then(dbGame => {
             //console.log("dbGame", dbGame)
@@ -95,12 +95,25 @@ router.get('/lobby/:id', auth, function (req, res, next) {
             })
 
                 .then(dbgame => {
-                    // console.log("dbGameW user1", dbgame)
-                    //console.log("dbGameW user2", dbgame.dataValues)
-                    const json = JSON.stringify(dbGame.dataValues)
-                    console.log("json", json)
-                    res.status(201).json(dbGame.dataValues )
-                    
+                    const playerObject = JSON.parse(dbGame.dataValues.userIds);
+                    console.log("dbGameW user1", playerObject.user1)
+                    console.log("dbGameW user2", playerObject.user2)
+                    console.log("dbGameW playerId", playerId)
+
+
+
+                    if (playerObject.user1 === playerId || playerObject.user2 === playerId) {
+                        console.log('the player is in the requested game')
+                        const json = JSON.stringify(dbGame.dataValues)
+                        console.log("json", json)
+                        res.status(201).json({ JoinGame: dbGame.dataValues.id })
+                    } else {
+                        console.log('the player is NOT NO NOT in the requested game')
+                        const json = JSON.stringify(dbGame.dataValues)
+                        console.log("json", json)
+                        res.status(201).json({ command: "reload" })
+                    }
+
                 })
         })
 
@@ -112,7 +125,7 @@ const usersOfGame = (currentUsersOfGame, newPlayer) => {
     console.log("is valid json tester: ", IsJsonString(currentUsersOfGame))
     if (IsJsonString(currentUsersOfGame)) {
         const obj = JSON.parse(currentUsersOfGame);
-        if (obj.user1 !== newPlayer) {
+        if (obj.user1 !== newPlayer && obj.user1 === null) {
             return JSON.stringify({
                 user1: obj.user1,
                 user2: newPlayer
@@ -168,7 +181,7 @@ router.get('/game/:id', function (req, res, next) {
                 where: { "gameId": id },
                 attributes: ['id', 'clicked', 'placeInMouth']
             })
-                .then(teetGameObjecthForThisGame => {
+                .then(teethForThisGame => {
                     const ToothInMout = teethForThisGame.map(crokiTeeth => {
                         return crokiTeeth.dataValues
                     })
@@ -194,6 +207,7 @@ router.put('/teeth', auth, function (req, res, next) {
     const teethId = parseInt(req.body.teethId)
     if (teethId) {
         console.log("change click of theetid:", parseInt(req.body.teethId))
+
         Teeth.findOne({ where: { "id": teethId } })
             .then(result => {
                 if (result == null) {
@@ -214,20 +228,27 @@ router.put('/teeth', auth, function (req, res, next) {
                     console.log("got here")
                     const id = result.dataValues.gameId
                     console.log("this tooth was biting! ", id)
+
                     Game.findOne({ where: { id } })
                         .then(dbGame => {
-                            console.log("game to update", dbGame)
+                            console.log("game to update233", dbGame.dataValues)
                             dbGame.update({
-                                status: "DONE"
+                                status: "DONE",
+                                playerWinner: req.user.dataValues.id
                             })
                         })
+                        .then(result => {
+                            console.log("got here 240")
+                            return result
+                        }
+                        )
                 }
+                console.log("Why does it takes so long?")
                 return result
             })
             .then(result => {
-                //this is the new part! 
                 const id = result.dataValues.gameId
-                console.log("this is IMP should be a id", id)
+                console.log("this is IMP should be a (game?? )id", id)
 
                 Game.findAll({ where: { id } })
                     .then(dbGame => {
@@ -255,12 +276,12 @@ router.put('/teeth', auth, function (req, res, next) {
                     })
             })
 
-            //this is the new part!
+
             .catch(err => {
                 res.status(500).json({
                     message: 'Tooth Unknown',
                 })
-                console.log('something went wrong')
+                console.log('something went wrong',err)
             })
     } else {
         res.send("message: unknown tooth")
