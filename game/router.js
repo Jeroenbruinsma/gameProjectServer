@@ -53,8 +53,22 @@ router.post('/game/', auth, function (req, res) {
             }
             Teeth
                 .create({ "gameId": gameId })
+
+
         })
-    res.status(201).send({ data: "send some data to make Serena Happy" })
+        .then(notNeeded => {
+           //new code! 
+            Game.findAndCountAll()
+                .then(dbCount => {
+                    return dbCount.rows
+                })
+                .then(lobbyGames => {
+                    res.json({ Lobby: lobbyGames })
+                })
+                .catch(err => res.statusCode(500).send("something went wrong"))
+        })
+    //new code!
+    //res.status(201).send({ data: "send some data to make Serena Happy" })
 })
 
 
@@ -85,7 +99,7 @@ router.get('/lobby/:id', auth, function (req, res, next) {
 
     Game.findOne({ where: { id } })
         .then(dbGame => {
-            //console.log("dbGame", dbGame)
+            console.log("dbGame", dbGame.dataValues)
             newStatus = statusOfGame(dbGame.dataValues.status)
             newUsers = usersOfGame(dbGame.dataValues.userIds, playerId)
             console.log("got back", newStatus)
@@ -123,7 +137,7 @@ const usersOfGame = (currentUsersOfGame, newPlayer) => {
     console.log("currentUsersOfGame", currentUsersOfGame, newPlayer)
     //validat if is valid json here
     console.log("is valid json tester: ", IsJsonString(currentUsersOfGame))
-    if (IsJsonString(currentUsersOfGame)) {
+    if (IsJsonString(currentUsersOfGame) && currentUsersOfGame != null){
         const obj = JSON.parse(currentUsersOfGame);
         if (obj.user1 !== newPlayer && obj.user1 === null) {
             return JSON.stringify({
@@ -281,7 +295,7 @@ router.put('/teeth', auth, function (req, res, next) {
                 res.status(500).json({
                     message: 'Tooth Unknown',
                 })
-                console.log('something went wrong',err)
+                console.log('something went wrong', err)
             })
     } else {
         res.send("message: unknown tooth")
