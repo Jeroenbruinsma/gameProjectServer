@@ -3,7 +3,7 @@ const {toJWT,toData} = require('./jwt')
 
 function auth(req, res, next) {
  // console.log("Got an auth req", req.headers)
-  console.log("Got an auth req uthorization", req.headers.authorization)
+  //console.log("Got an auth req uthorization", req.headers.authorization)
   
   const auth = req.headers.authorization && req.headers.authorization.split(' ')
   if (auth && auth[0] === 'Bearer' && auth[1]) {

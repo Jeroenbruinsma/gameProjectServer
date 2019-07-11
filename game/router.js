@@ -102,16 +102,18 @@ router.get('/game/:id', function (req, res, next) {
         .then(dbGame => {
             const GameInfo = dbGame[0].dataValues
             console.log("std obj", GameInfo)
-            Teeth.findAll({ where: { "gameId": id },
-                            attributes: ['id','clicked', 'placeInMouth'] 
-                        })
+            Teeth.findAll({
+                where: { "gameId": id },
+                attributes: ['id', 'clicked', 'placeInMouth']
+            })
                 .then(teethForThisGame => {
                     const ToothInMout = teethForThisGame.map(crokiTeeth => {
                         return crokiTeeth.dataValues
                     })
-                    return { GameInfo, 
-                        ToothInMout 
-                             }
+                    return {
+                        GameInfo,
+                        ToothInMout
+                    }
                 })
                 .then(GameObject => {
                     const json = JSON.stringify(GameObject)
@@ -119,8 +121,8 @@ router.get('/game/:id', function (req, res, next) {
                     stream.updateInit(json)
                     return stream.send(json)
                 })
-            
-           
+
+
         })
 
 })
@@ -137,14 +139,28 @@ router.put('/teeth', auth, function (req, res, next) {
                         message: 'Tooth Unknown',
                     })
                 } else {
-                    console.log("found the tooth, update the clickkk", result)
+                    console.log("found the tooth, update the clickkk")
                     result.update({
                         clicked: true
                     })
-
-
                 }
                 return (result)
+            })
+            .then(result => {
+                console.log("got here", result.dataValues)
+                if (result.dataValues.biting) {
+                    console.log("got here")
+                    const id = result.dataValues.gameId
+                    console.log("this tooth was biting! ", id)
+                    Game.findOne({ where: { id } })
+                        .then(dbGame => {
+                            console.log("game to update", dbGame)
+                            dbGame.update({
+                                status: "DONE"
+                            })
+                        })
+                }
+                return result
             })
             .then(result => {
                 //this is the new part! 
@@ -154,7 +170,7 @@ router.put('/teeth', auth, function (req, res, next) {
                 Game.findAll({ where: { id } })
                     .then(dbGame => {
                         const GameInfo = dbGame[0].dataValues
-                        console.log("std obj", GameInfo)
+                        //console.log("std obj", GameInfo)
                         Teeth.findAll({
                             where: { "gameId": id },
                             attributes: ['id', 'clicked', 'placeInMouth']
@@ -170,8 +186,7 @@ router.put('/teeth', auth, function (req, res, next) {
                             })
                             .then(GameObject => {
                                 const json = JSON.stringify(GameObject)
-                                console.log("json", json)
-                                console.log("is stream ", stream)
+                                //console.log("json", json)
                                 stream.updateInit(json)
                                 return stream.send(json)
                             })
