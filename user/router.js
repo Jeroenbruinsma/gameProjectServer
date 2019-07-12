@@ -33,4 +33,22 @@ router.post('/user', function (req, res,next) {
 
 )
 
+
+
+router.get('/user', function (req, res, next) {
+    console.log("router form user get winner " , req.body)
+    User.findByPk(84)    //{ where: { userId: req.user.dataValues.id } }
+        .then(user => {
+            res.json({ winner: user.name })
+        })
+        .catch(err => {
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err
+            })
+        })
+})
+
+
+
 module.exports = router;
