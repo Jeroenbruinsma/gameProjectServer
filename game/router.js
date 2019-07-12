@@ -190,6 +190,7 @@ router.get('/game/:id', function (req, res, next) {
             console.log("std obj", GameInfo)
             Teeth.findAll({
                 where: { "gameId": id },
+                order: [['placeInMouth', 'DESC']],
                 attributes: ['id', 'clicked', 'placeInMouth']
             })
                 .then(teethForThisGame => {
