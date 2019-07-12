@@ -70,8 +70,6 @@ router.post('/game/', auth, function (req, res) {
     //new code!
     //res.status(201).send({ data: "send some data to make Serena Happy" })
 })
-
-
 router.get('/lobby', auth, function (req, res, next) {
     Game.findAndCountAll()
         .then(dbCount => {
@@ -239,7 +237,7 @@ router.put('/teeth', auth, function (req, res, next) {
                 if (result.dataValues.biting) {
                     console.log("got here")
                     const id = result.dataValues.gameId
-                    console.log("this tooth was biting! ", id)
+                    console.log("this tooth was biting! checkcheck should gameID ", id)
 
                     Game.findOne({ where: { id } })
                         .then(dbGame => {
@@ -268,6 +266,7 @@ router.put('/teeth', auth, function (req, res, next) {
                         //console.log("std obj", GameInfo)
                         Teeth.findAll({
                             where: { "gameId": id },
+                            order: [['placeInMouth', 'DESC']],
                             attributes: ['id', 'clicked', 'placeInMouth']
                         })
                             .then(teethForThisGame => {
