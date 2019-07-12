@@ -19,9 +19,9 @@ const Teeth = sequelize.define('teeth', {
         defaultValue: false,
     },
     placeInMouth: {
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: false,
+        defaultValue: 999,
     },
 }, {
         timestamps: false,
