@@ -3,11 +3,6 @@ const express = require('express')
 var router = express.Router();
 const auth = require('../login/middleware')
 const Game = require('../game/model')
-const Sse = require('json-sse')
-const {stream} = import('../game/router')
-
-//const json = JSON.stringify([])
-//const stream = new Sse(json);
 
 router.get('/teeth', auth, function (req, res, next) {
     Teeth.findAll()    //{ where: { userId: req.user.dataValues.id } }
@@ -50,7 +45,6 @@ router.put('/teeth', auth, function (req, res, next) {
                 Game.findAll({ where: { id } })
                     .then(dbGame => {
                         const GameInfo = dbGame[0].dataValues
-                        console.log("std obj", GameInfo)
                         Teeth.findAll({
                             where: { "gameId": id },
                             attributes: ['id', 'clicked', 'placeInMouth']
@@ -69,7 +63,8 @@ router.put('/teeth', auth, function (req, res, next) {
                                 console.log("json", json)
                                 console.log("is stream ", stream)
                                 stream.updateInit(json)
-                                return stream.send(json)
+                                stream.send(json)
+                                return res.send(GameObject)
                             })
                     })
             })
