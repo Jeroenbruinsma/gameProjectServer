@@ -36,23 +36,23 @@ router.post('/game/', auth, function (req, res) {
                 .catch(err => res.statusCode(500).send("something went wrong"))
 
             const magic_theeth = getRandomInt(maxTeethInMouth)
-            for (let i = 0; i < maxTeethInMouth; i++) {
+            for (let i = 0; i <= maxTeethInMouth +1; i++) {
                 console.log("create teeth ", i)
                 if (i === magic_theeth) {
                     Teeth
                         .create({
                             "gameId": gameId,
-                            "biting": true
+                            "biting": true,
+                            "placeInMouth" : i
                         })
                 } else {
                     Teeth
                         .create({
-                            "gameId": gameId
+                            "gameId": gameId,
+                            "placeInMouth" : i
                         })
                 }
             }
-            Teeth
-                .create({ "gameId": gameId })
 
 
         })
@@ -113,9 +113,6 @@ router.get('/lobby/:id', auth, function (req, res, next) {
                     console.log("dbGameW user1", playerObject.user1)
                     console.log("dbGameW user2", playerObject.user2)
                     console.log("dbGameW playerId", playerId)
-
-
-
                     if (playerObject.user1 === playerId || playerObject.user2 === playerId) {
                         console.log('the player is in the requested game')
                         const json = JSON.stringify(dbGame.dataValues)
