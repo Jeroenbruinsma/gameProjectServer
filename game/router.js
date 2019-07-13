@@ -3,7 +3,7 @@ var router = express.Router();
 const auth = require('../login/middleware')
 const Game = require('./model')
 const Teeth = require('../teeth/model')
-const maxTeethInMouth = 3;
+const maxTeethInMouth = 4;
 const Sse = require('json-sse')
 const json = JSON.stringify([])
 
@@ -108,7 +108,7 @@ router.get('/lobby/:id', auth, function (req, res, next) {
 
                 .then(dbgame => {
                     const playerObject = JSON.parse(dbGame.dataValues.userIds);
-                    console.log("dbGameW user1", playerObject.user1)
+                    console.log("dbGameW user1", playerObject.user1) 
                     console.log("dbGameW user2", playerObject.user2)
                     console.log("dbGameW playerId", playerId)
                     if (playerObject.user1 === playerId || playerObject.user2 === playerId) {
@@ -116,8 +116,17 @@ router.get('/lobby/:id', auth, function (req, res, next) {
                         const json = JSON.stringify(dbGame.dataValues)
                         console.log("json", json)
                         res.status(201).json({ JoinGame: dbGame.dataValues.id })
-                    } else {
+                    }if(playerObject.user2 === null ){
+                        console.log('the player is in the requested game')
+                        playerObject.user2 = playerId;
+                        const json = JSON.stringify(playerObject)
+                        console.log("json", json)
+                        res.status(201).json({ JoinGame: dbGame.dataValues.id })
+                    }
+                    else {
                         console.log('the player is NOT NO NOT in the requested game')
+                       
+                       
                         const json = JSON.stringify(dbGame.dataValues)
                         res.status(201).json({ command: "reload" })
                     }
